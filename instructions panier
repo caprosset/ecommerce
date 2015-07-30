@@ -1,0 +1,13 @@
+1.	Ajouter les champs cp (varchar de 10) et city (varchar de 80) dans la table user.
+
+2.	Modifier le modèle user afin de tenir compte de ces deux champs.
+
+3.	La validation du panier permet l'affichage d'une page nouvelle récapitulative contenant le montant HT du panier, TVA et TTC. La page récapitule les info du client. Cette page doit contenir un bouton pour régler la facture.
+
+4.	Ce bouton permet de déclencher une méthode submitorderAction du productControler.
+
+5.	La méthode submitorderAction simule l'acceptation ou l'annulation de la facture d'une façon aléatoire.
+
+6.	En cas d'acceptation, on invoque la méthode paiementvalideAction. Cette méthode existe déjà. Elle porte le nom handleSubmitOrder (vous devez donc renommer cette méthode. On affiche une nouvelle page indiquant l'acceptation du paiement avec des info que vous jugeriez utiles
+
+7.	En cas d'annulation, on invoque la méthode paiementannuleAction. On affiche une nouvelle page indiquant l'annulation du paiement avec des info que vous jugeriez utiles
