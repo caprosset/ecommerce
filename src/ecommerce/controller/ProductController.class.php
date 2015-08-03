@@ -74,6 +74,21 @@
                 require ROOT . 'src/ecommerce/view/product/show.php';
             }
         }
+
+        private function listAction()
+        {
+            
+            $oProduct = new Product();
+
+            // product not found => redirect home
+            if (null === $oProduct) {
+                $this->homeAction();
+                return;
+            } else {
+                $aProducts = ProductManager::getAll();
+                require ROOT . 'src/ecommerce/view/product/list.php';
+            }
+        }
 		
 
 		private function editAction()
@@ -141,6 +156,54 @@
             }
         }
 
+        //action permettant de supprimer un produit de la liste des produits
+        private function removeAction()
+        {
+            
+            if (array_key_exists('id', $_GET)) {
+                $iId = $_GET['id'];
+
+                if (null === $iId) {
+                    $this->homeAction();
+                    return;
+                } else {
+                    $oProduct = ProductManager::get($iId);
+                    try{
+                        $result = ProductManager::remove($iId);
+                        $aProducts = ProductManager::getAll();
+                        require ROOT . 'src/ecommerce/view/product/list.php';
+                    }catch (\Exception $e){
+                        $result = $e->getMessage();
+                        echo "Le produit ne peux pas être supprimé car il appartient à une catégorie";
+                    }
+                }
+            }
+
+        }
+
+
+        private function archiveAction()
+        {
+            {
+                $iId = intval($_GET['id']);
+                $oProduct = ProductManager::get($iId);
+
+                if($oProduct->getActive() == 1) 
+                {
+                    $result = ProductManager::setOutOfStock($iId);
+                } 
+
+                if($oProduct->getActive() == 0) 
+                {
+                    $result = ProductManager::setInStock($iId);
+                }   
+
+                $aProducts = ProductManager::getAll();
+                require ROOT . 'src/ecommerce/view/product/list.php';
+            }    
+        }
+
+
         private function cartAction()
         {
             if (array_key_exists('remove', $_POST)) {
@@ -161,7 +224,7 @@
 
         }
 
-        //fonction qui permet de controler
+
         private function confirmAction()
         {
             if (array_key_exists('remove', $_POST)) {

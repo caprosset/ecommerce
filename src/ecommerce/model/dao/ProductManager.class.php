@@ -29,6 +29,7 @@
             $oProduct->setImage($aProduct['image']);
             $oProduct->setPrice(floatval($aProduct['price']));
             $oProduct->setRating(intval($aProduct['rating']));
+            $oProduct->setActive(intval($aProduct['active']));
             return $oProduct;
         }
 
@@ -134,9 +135,14 @@
          *
          * @return array(Product) all products.
          */
-        public static function getAll()
+        public static function getAll($active = false)
         {
-            $sQuery = 'select * from product';
+            $sQuery = 'select * from product ';
+
+            if($active !== false){
+              $sQuery .= 'where active = ' . $active;
+            }
+
             $aProducts = array();
             foreach (DBOperation::getAll($sQuery) as $aProduct) {
                 $aProducts[] = self::convertToObject($aProduct);
@@ -210,5 +216,68 @@
 
             return true;
         }
+
+
+        //supprimer un produit précis
+        public static function remove($iId)
+        {
+            $sQuery = "delete from comment ";
+            $sQuery .= " where product_id = " . $iId;
+            $iRetExec = DBOperation::exec($sQuery);
+
+            $sQuery = "delete from product_category ";
+            $sQuery .= "where product_id = " . $iId;
+            $iRetExec = DBOperation::exec($sQuery);
+
+            $sQuery = "delete from product ";
+            $sQuery .= "where id = " . $iId;
+            $iRetExec = DBOperation::exec($sQuery);
+
+            if(null !== $sLastSqlError = DBOperation::getLastSqlError()){
+                throw new \Exception($sLastSqlError);
+            }
+
+        }
+
+
+        //change the status of an "out of stock" product to unpublished
+        public static function setOutOfStock($iId)
+        {
+            $sQuery = " update product ";
+            $sQuery .= "set active = 0"; 
+            $sQuery .= " WHERE id = " . $iId;
+
+            $iRetExec = DBOperation::exec($sQuery);
+            if(null !== $sLastSqlError = DBOperation::getLastSqlError()){
+                throw new \Exception($sLastSqlError);
+            }
+        }
+
+        public static function setInStock($iId)
+        {
+            $sQuery = " update product ";
+            $sQuery .= "set active = 1"; 
+            $sQuery .= " WHERE id = " . $iId;
+            
+            $iRetExec = DBOperation::exec($sQuery);
+            if(null !== $sLastSqlError = DBOperation::getLastSqlError()){
+                throw new \Exception($sLastSqlError);
+            }
+        }
+
+
+        // //recuperer tous les produits activés (en stock)
+        // public static function = getActiveProduct(Product $oProduct, $iLimit = 10)
+        // {
+        //     $sQuery = 'select * from comment ';
+        //     $sQuery .= ' where product_id = ' . $oProduct->getId();
+        //     $sQuery .= ' AND validation = 1';
+        //     $sQuery .= ' limit ' . $iLimit;
+        //     $aComments = array();
+        //     foreach (DBOperation::getAll($sQuery) as $aComment) {
+        //         $aComments[] = self::convertToObject($aComment);
+        //     }
+        //     return $aComments;
+        // }
 
     }

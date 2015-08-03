@@ -8,6 +8,7 @@ $(document).ready(function () {
         });
     })
 
+//script js for the rating stars on the comment form on the product pages
     $('div.rate').raty({ 
 				path: 'lib/images',
 				scoreName: 'rate' ,
@@ -22,4 +23,5 @@ $(document).ready(function () {
     				return $(this).attr('data-score');
     			}
 		});
+
 });

@@ -12,13 +12,14 @@
         private $fPrice;
         private $aCategories = array();
         private $iRating;
+        private $iActive;
 
         /**
          * @param mixed $fPrice
          */
         public function setPrice($fPrice)
         {
-            $this->fPrice = floatval(number_format($fPrice, 2));
+            $this->fPrice = $fPrice;
         }
 
         /**
@@ -26,7 +27,7 @@
          */
         public function getPrice()
         {
-            return number_format($this->fPrice, 2);
+            return $this->fPrice;
         }
 
         /**
@@ -136,5 +137,21 @@
         public function getPriceTTC()
         {
             return number_format(($this->getPrice()*1.2), 2);
+        }
+
+        /**
+         * @param mixed $iActive
+         */
+        public function setActive($iActive)
+        {
+            $this->iActive = $iActive;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getActive()
+        {
+            return $this->iActive;
         }
     }

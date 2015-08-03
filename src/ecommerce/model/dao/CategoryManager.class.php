@@ -126,4 +126,40 @@
         }
 
 
+        //supprimer une categorie précise
+        public static function remove($iId)
+        {
+            $sQuery = "delete from category ";
+            $sQuery .= " where id = " . $iId;
+
+            $iRetExec = DBOperation::exec($sQuery);
+            if(null !== $sLastSqlError = DBOperation::getLastSqlError()){
+                throw new \Exception($sLastSqlError);
+            }
+
+        }
+
+        /**
+         * Get the number of products from each category.
+         *
+         * @return array(Category) all categories.
+         */
+        public static function getProductsCount()
+        {
+            $sQuery = 'SELECT category.id , category.name, category.description , count(product.id) AS nb_produits' ;
+            $sQuery .= ' FROM category';
+            $sQuery .= ' INNER JOIN product_category ON category.id = product_category.category_id';
+            $sQuery .= ' INNER JOIN product ON product_category.product_id = product.id';
+            $sQuery .= ' GROUP BY category.id , category.name, category.description';
+
+            //echo  $sQuery ;
+            $aCategories = array();
+            foreach (DBOperation::getAll($sQuery) as $aCategory) {
+                $aCategories[] = $aCategory;
+            }
+
+            return $aCategories;
+        }
+
+        
     }

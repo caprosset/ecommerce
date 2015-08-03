@@ -181,8 +181,12 @@
             }
 
             //$aCart = CartManager::getAll();
-            $aAllOrders = OrderManager::getAllOrders($oUser);
-
+            $iRole = $oUser->getRole();
+            if($iRole != 2)
+                $aAllOrders = OrderManager::getAllOrders($oUser);
+            else
+                $aAllOrders = OrderManager::getAllOrders();
+            //$aTotalOrders = OrderManager::getTotalOrders();
 
 
             //$fTotal = number_format(CartManager::getTotal(), 2);

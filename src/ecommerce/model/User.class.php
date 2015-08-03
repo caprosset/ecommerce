@@ -19,6 +19,7 @@
         private $sFirstName;
         private $sCp;
         private $sCity;
+        private $iRole;
 
 
         /**
@@ -138,4 +139,19 @@
             return $this->sCity;
         }
 
+        /**
+         * @param mixed $iRole
+         */
+        public function setRole($iRole)
+        {
+            $this->iRole = $iRole;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getRole()
+        {
+            return $this->iRole;
+        }
     }

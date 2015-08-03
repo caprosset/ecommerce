@@ -40,11 +40,14 @@
          * @param $oUser User
          * @return array
          */
-        public static function getAllOrders($oUser)
+        //get all orders from one user (list of orders to be displayed in user account)
+        public static function getAllOrders($oUser=null)
         {
             $sQuery = "SELECT * FROM orders";
-            $sQuery .= " WHERE user_email = '" . $oUser->getEmail() . "'";
-            //$sQuery .= " ORDER BY date DESC";
+            if($oUser !== null){
+                $sQuery .= " WHERE user_email = '" . $oUser->getEmail() . "'";
+            }
+            $sQuery .= " ORDER BY date DESC";
             
             $aAllOrders = [];
 
@@ -54,5 +57,26 @@
 
             return $aAllOrders;
         }
+
+
+        // /**
+        //  * @param $oUser User
+        //  * @return array
+        //  */
+        // //get all orders from all users (list of orders to be displayed in admin account)
+        // public static function getTotalOrders()
+        // {
+        //     $sQuery = "SELECT * FROM orders";
+        //     //$sQuery .= " WHERE user_email = '" . $oUser->getEmail() . "'";
+        //     $sQuery .= " ORDER BY date DESC";
+            
+        //     $aTotalOrders = [];
+
+        //     foreach (DBOperation::getAll($sQuery) as $aOrder) {
+        //         $aTotalOrders[] = self::convertToObject($aOrder); 
+        //     }
+
+        //     return $aTotalOrders;
+        // }
 
 }

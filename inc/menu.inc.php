@@ -1,6 +1,7 @@
 <?php
     use ecommerce\model\Category;
     use ecommerce\model\dao\CategoryManager;
+    use ecommerce\model\dao\UserManager;
 
 ?>
 <nav class="navbar navbar-default" role="navigation">
@@ -33,6 +34,23 @@
                     </ul>
                 </li>
 
+                <?php $oUser = UserManager::getCurrent();
+                    if($oUser) {
+                        if (UserManager::getCurrent()->getRole() == 2) {  ?>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                                        class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Back-office <span
+                                        class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="index.php?page=product&action=list"><span class="glyphicon glyphicon-list"></span>&nbsp;Liste des produits</a></li>
+                                    <li><a href="index.php?page=category&action=list"><span class="glyphicon glyphicon-list"></span>&nbsp;Liste des catégories</a></li>
+                                </ul>
+                            </li>
+                        <?php 
+                        }
+                    }
+                ?>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if (!array_key_exists('email', $_SESSION)) : ?>
@@ -59,3 +77,4 @@
         </div>
     </div>
 </nav>
+

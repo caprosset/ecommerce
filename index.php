@@ -7,10 +7,12 @@
 	use ecommerce\controller\CategoryController;
 	use ecommerce\controller\CommentController;
 	use ecommerce\controller\AccountController;
+	use ecommerce\controller\AdminController;
 	
 	use ecommerce\model\dao\CategoryManager;
    use ecommerce\model\dao\ProductManager;
    use ecommerce\model\dao\CommentManager;
+   use ecommerce\model\dao\UserManager;
 	
    require 'inc/conf.inc.php';
 
@@ -40,6 +42,9 @@
 		case "account":
 			$controller = new AccountController();
 			break;
+		case "admin":
+			$controller = new AdminController();
+			break;
 		default:
 			header('HTTP/1.0 404 Not Found');
 			//header('location: index.php');
@@ -48,6 +53,7 @@
 	function homeAction($sPage)
 	{
 	
+		$oUser = UserManager::getCurrent();
 		require ROOT . 'inc/site.header.inc.php';
 		$aCategories = CategoryManager::getAll();
 		$aProducts = ProductManager::getRandom(4);

@@ -73,12 +73,12 @@
             $oUser->setEmail($_POST['email']);
             $oUser->setPassword($_POST['password']);
 	
-            if (UserManager::connect($oUser)) {
-                //header('location: index.php');
-				header('location: index.php');
-            } else {
+            if (UserManager::connect($oUser) == false) {
                 $bConnectError = true;
                 require ROOT . 'src/ecommerce/view/login/login.php';
+            } 
+            else {
+                echo "Bienvenue !";
             }
         }
 
